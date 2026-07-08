@@ -1,0 +1,213 @@
+/* Calgary Charity Fitness Challenge — design tokens
+   Navy court + championship gold. Display type: Barlow Condensed (scoreboard);
+   body: Inter. One signature: the scoreboard standings. */
+
+:root {
+  --navy: #14284b;
+  --navy-deep: #0d1c38;
+  --paper: #f6f7f9;
+  --card: #ffffff;
+  --ink: #1b2437;
+  --slate: #66718c;
+  --line: #e3e7ee;
+  --gold: #e0a63c;
+  --gold-soft: #fdf4e0;
+  --green: #2f9e6e;
+  --green-soft: #e8f6ef;
+  --red: #c4453c;
+  --red-soft: #fbecea;
+  --radius: 14px;
+  --shadow: 0 1px 3px rgba(13, 28, 56, 0.08);
+  --display: 'Barlow Condensed', 'Arial Narrow', sans-serif;
+  --body: 'Inter', -apple-system, 'Segoe UI', Roboto, sans-serif;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  font-family: var(--body);
+  background: var(--paper);
+  color: var(--ink);
+  font-size: 15px;
+  line-height: 1.45;
+  padding-bottom: calc(64px + env(safe-area-inset-bottom));
+  min-height: 100vh;
+}
+
+/* ---------- header ---------- */
+.app-header {
+  background: var(--navy);
+  color: #fff;
+  padding: calc(12px + env(safe-area-inset-top)) 16px 12px;
+  position: sticky; top: 0; z-index: 20;
+}
+.app-header .eyebrow {
+  font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--gold); font-weight: 600;
+}
+.app-header h1 {
+  font-family: var(--display);
+  font-weight: 700; font-size: 24px; line-height: 1.1;
+  letter-spacing: 0.02em; text-transform: uppercase;
+}
+
+/* ---------- layout ---------- */
+main { max-width: 640px; margin: 0 auto; padding: 16px; }
+.view { display: none; }
+.view.active { display: block; animation: rise 0.18s ease-out; }
+@keyframes rise { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .view.active { animation: none; } }
+
+.card {
+  background: var(--card); border: 1px solid var(--line);
+  border-radius: var(--radius); box-shadow: var(--shadow);
+  padding: 16px; margin-bottom: 14px;
+}
+.card h2 {
+  font-family: var(--display); text-transform: uppercase; letter-spacing: 0.03em;
+  font-size: 20px; font-weight: 700; margin-bottom: 10px; color: var(--navy);
+}
+.card h3 { font-size: 14px; font-weight: 600; margin: 14px 0 6px; }
+.muted { color: var(--slate); font-size: 13px; }
+.spacer { height: 8px; }
+
+/* ---------- scoreboard (signature) ---------- */
+.board { width: 100%; border-collapse: collapse; }
+.board th {
+  font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em;
+  color: var(--slate); text-align: left; padding: 6px 8px 6px 0;
+  border-bottom: 1px solid var(--line); font-weight: 600;
+}
+.board td { padding: 9px 8px 9px 0; border-bottom: 1px solid var(--line); vertical-align: middle; }
+.board tr:last-child td { border-bottom: none; }
+.board .num {
+  font-family: var(--display); font-weight: 700; font-size: 22px;
+  text-align: right; color: var(--navy); font-variant-numeric: tabular-nums;
+}
+.board .sub { font-size: 12px; color: var(--slate); }
+.rank-chip {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 26px; height: 26px; border-radius: 8px; padding: 0 4px;
+  font-family: var(--display); font-weight: 700; font-size: 16px;
+  background: var(--paper); color: var(--slate);
+}
+.rank-1 { background: var(--gold); color: var(--navy-deep); }
+.rank-2 { background: #d7dce6; color: var(--navy); }
+.rank-3 { background: #ead6bd; color: #7a5b26; }
+.belt { font-size: 13px; }
+
+/* ---------- forms ---------- */
+label { display: block; font-size: 13px; font-weight: 600; margin: 12px 0 4px; }
+input[type="text"], input[type="email"], input[type="tel"], input[type="number"],
+input[type="password"], input[type="date"], input[type="time"], select {
+  width: 100%; padding: 11px 12px; font-size: 16px; font-family: var(--body);
+  border: 1px solid var(--line); border-radius: 10px; background: #fff; color: var(--ink);
+}
+input:focus, select:focus, button:focus-visible {
+  outline: 2px solid var(--gold); outline-offset: 1px; border-color: var(--gold);
+}
+.row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.row3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+
+.btn {
+  display: block; width: 100%; padding: 13px; margin-top: 14px;
+  font-size: 15px; font-weight: 600; font-family: var(--body);
+  border: none; border-radius: 10px; cursor: pointer;
+  background: var(--navy); color: #fff;
+}
+.btn:active { transform: translateY(1px); }
+.btn.gold { background: var(--gold); color: var(--navy-deep); }
+.btn.ghost { background: transparent; color: var(--navy); border: 1px solid var(--line); }
+.btn.danger { background: var(--red-soft); color: var(--red); }
+.btn[disabled] { opacity: 0.55; cursor: default; }
+.btn-inline { width: auto; display: inline-block; padding: 9px 14px; margin-top: 8px; font-size: 13px; }
+
+/* ---------- category log rows ---------- */
+.cat-row {
+  display: grid; grid-template-columns: 1fr 92px 52px; gap: 10px;
+  align-items: center; padding: 8px 0; border-bottom: 1px solid var(--line);
+}
+.cat-row:last-of-type { border-bottom: none; }
+.cat-name { font-size: 14px; font-weight: 600; }
+.cat-rate { display: block; font-size: 11px; color: var(--slate); font-weight: 400; }
+.cat-pts {
+  font-family: var(--display); font-weight: 700; font-size: 20px;
+  text-align: center; color: var(--navy); background: var(--paper);
+  border-radius: 8px; padding: 4px 0; font-variant-numeric: tabular-nums;
+}
+.cat-pts.capped { color: var(--gold); }
+
+.score-preview {
+  display: flex; justify-content: space-between; align-items: baseline;
+  background: var(--navy); color: #fff; border-radius: 10px;
+  padding: 12px 14px; margin-top: 14px;
+}
+.score-preview .total {
+  font-family: var(--display); font-weight: 700; font-size: 30px; color: var(--gold);
+}
+.bonus-tag {
+  display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: 0.05em;
+  background: var(--green-soft); color: var(--green);
+  border-radius: 6px; padding: 2px 7px; text-transform: uppercase;
+}
+.bonus-tag.off { background: var(--paper); color: var(--slate); }
+
+/* ---------- segmented toggle ---------- */
+.seg {
+  display: flex; background: var(--paper); border: 1px solid var(--line);
+  border-radius: 10px; padding: 3px; margin-bottom: 12px; overflow-x: auto;
+}
+.seg button {
+  flex: 1; padding: 8px 10px; font-size: 13px; font-weight: 600;
+  border: none; background: transparent; color: var(--slate);
+  border-radius: 8px; cursor: pointer; white-space: nowrap; font-family: var(--body);
+}
+.seg button.on { background: var(--navy); color: #fff; }
+
+/* ---------- notices ---------- */
+.notice { border-radius: 10px; padding: 11px 13px; font-size: 13px; margin-bottom: 12px; }
+.notice.error { background: var(--red-soft); color: var(--red); }
+.notice.ok { background: var(--green-soft); color: var(--green); }
+.notice.info { background: var(--gold-soft); color: #8a6516; }
+
+.code-hero {
+  text-align: center; background: var(--navy); color: #fff;
+  border-radius: var(--radius); padding: 22px 16px; margin: 12px 0;
+}
+.code-hero .code {
+  font-family: var(--display); font-weight: 700; font-size: 44px;
+  letter-spacing: 0.18em; color: var(--gold);
+}
+
+.loading { text-align: center; color: var(--slate); padding: 28px 0; font-size: 13px; }
+
+/* ---------- stat strip ---------- */
+.stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 14px; }
+.stat {
+  background: var(--card); border: 1px solid var(--line); border-radius: var(--radius);
+  padding: 12px; text-align: center;
+}
+.stat .v { font-family: var(--display); font-weight: 700; font-size: 26px; color: var(--navy); }
+.stat .k { font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--slate); }
+
+/* ---------- bottom nav ---------- */
+.tabbar {
+  position: fixed; bottom: 0; left: 0; right: 0; z-index: 30;
+  display: flex; background: var(--card); border-top: 1px solid var(--line);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+.tabbar button {
+  flex: 1; padding: 9px 4px 7px; border: none; background: transparent;
+  font-size: 11px; font-weight: 600; color: var(--slate); cursor: pointer; font-family: var(--body);
+}
+.tabbar button .ico { display: block; font-size: 19px; margin-bottom: 1px; }
+.tabbar button.on { color: var(--navy); }
+.tabbar button.on .ico { transform: translateY(-1px); }
+
+/* small screens */
+@media (max-width: 380px) {
+  .board .num { font-size: 19px; }
+  .app-header h1 { font-size: 21px; }
+}

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Fitness Challenge</title>
+  <meta name="description" content="Calgary Charity Fitness Challenge — log workouts, track standings, compete in the Final Challenge.">
+
+  <!-- PWA -->
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="theme-color" content="#14284b">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Fit Challenge">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="icons/icon-192.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="app-header">
+  <div class="eyebrow" id="hdr-eyebrow">In support of Kids Up Front</div>
+  <h1 id="hdr-title">Calgary Charity Fitness Challenge</h1>
+</header>
+
+<main>
+  <div id="global-notice"></div>
+
+  <!-- ============ STANDINGS ============ -->
+  <section class="view" id="view-standings">
+    <div class="seg" id="standings-seg">
+      <button data-mode="teams" class="on">Team standings</button>
+      <button data-mode="top25">Top 25</button>
+    </div>
+    <div id="standings-body"><div class="loading">Loading standings…</div></div>
+  </section>
+
+  <!-- ============ MY TEAM ============ -->
+  <section class="view" id="view-team">
+    <div id="team-body"><div class="loading">Loading…</div></div>
+  </section>
+
+  <!-- ============ FINAL ============ -->
+  <section class="view" id="view-final">
+    <div class="seg" id="final-seg">
+      <button data-mode="schedule" class="on">Schedule</button>
+      <button data-mode="enter">Enter results</button>
+      <button data-mode="live">Live results</button>
+    </div>
+    <div id="final-body"><div class="loading">Loading…</div></div>
+  </section>
+
+  <!-- ============ MORE ============ -->
+  <section class="view" id="view-more">
+    <div id="more-body"></div>
+  </section>
+</main>
+
+<nav class="tabbar">
+  <button data-view="standings" class="on"><span class="ico">🏆</span>Standings</button>
+  <button data-view="team"><span class="ico">💪</span>My Team</button>
+  <button data-view="final"><span class="ico">⏱️</span>Final</button>
+  <button data-view="more"><span class="ico">⋯</span>More</button>
+</nav>
+
+<script src="config.js"></script>
+<script src="app.js"></script>
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function () {
+      navigator.serviceWorker.register('sw.js').catch(function () {});
+    });
+  }
+</script>
+</body>
+</html>
