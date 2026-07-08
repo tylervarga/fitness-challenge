@@ -570,6 +570,30 @@
       '<button class="btn gold" id="fin-save">Save result</button></div>';
     body.innerHTML = html;
 
+    var finGender = 'male';
+    var finStyle = 'regular';
+
+    function pushupMultiplier() {
+      return finGender === 'female' && finStyle === 'regular' ? 2 : 1;
+    }
+
+    function refreshPushupToggles() {
+      var genderSeg = $('fin-gender');
+      var styleSeg = $('fin-style');
+      if (!genderSeg) return;
+      genderSeg.querySelectorAll('button').forEach(function (b) {
+        b.classList.toggle('on', b.dataset.v === finGender);
+      });
+      var locked = finGender === 'male';
+      if (locked) finStyle = 'regular';
+      styleSeg.classList.toggle('locked', locked);
+      styleSeg.querySelectorAll('button').forEach(function (b) {
+        b.classList.toggle('on', b.dataset.v === finStyle);
+        b.disabled = locked;
+      });
+      $('fin-mult').textContent = 'Each rep counts ' + pushupMultiplier() + 'x toward the team score.';
+    }
+
     function renderInputs() {
       var ev = EVENTS.filter(function (e) { return e.key === $('fin-event').value; })[0];
       var el = $('fin-inputs');
@@ -578,11 +602,29 @@
           '<input type="number" inputmode="numeric" min="0" id="fin-min" placeholder="min">' +
           '<input type="number" inputmode="numeric" min="0" max="59" id="fin-sec" placeholder="sec"></div>';
       } else {
-        el.innerHTML = '<label for="fin-reps">Push-ups completed (5 min)</label>' +
-          '<input type="number" inputmode="numeric" min="0" id="fin-reps" placeholder="reps">' +
-          '<label for="fin-type">Style</label><select id="fin-type">' +
-          '<option value="regular">Regular (2 pts per rep)</option>' +
-          '<option value="knee">Knee (1 pt per rep)</option></select>';
+        el.innerHTML = '<label>Gender</label>' +
+          '<div class="seg mini" id="fin-gender">' +
+          '<button type="button" data-v="male">Male</button>' +
+          '<button type="button" data-v="female">Female</button></div>' +
+          '<label>Push-up style</label>' +
+          '<div class="seg mini" id="fin-style">' +
+          '<button type="button" data-v="regular">Regular</button>' +
+          '<button type="button" data-v="kneeling">Kneeling</button></div>' +
+          '<p class="muted" id="fin-mult"></p>' +
+          '<label for="fin-reps">Push-ups completed (5 min)</label>' +
+          '<input type="number" inputmode="numeric" min="0" id="fin-reps" placeholder="reps">';
+        $('fin-gender').addEventListener('click', function (e) {
+          var b = e.target.closest('button'); if (!b) return;
+          finGender = b.dataset.v;
+          refreshPushupToggles();
+        });
+        $('fin-style').addEventListener('click', function (e) {
+          var b = e.target.closest('button'); if (!b || b.disabled) return;
+          if (finGender !== 'female') return;
+          finStyle = b.dataset.v;
+          refreshPushupToggles();
+        });
+        refreshPushupToggles();
       }
     }
     $('fin-event').addEventListener('change', renderInputs);
@@ -603,7 +645,8 @@
         var reps = parseFloat($('fin-reps').value);
         if (isNaN(reps) || reps < 0) { notice($('fin-notice'), 'error', 'Enter a rep count.'); return; }
         payload.value = reps;
-        payload.value2 = $('fin-type').value;
+        payload.value2 = finGender === 'male' ? 'male-regular'
+          : (finStyle === 'regular' ? 'female-regular' : 'female-kneeling');
       }
       btn.disabled = true; btn.textContent = 'Saving…';
       apiPost(payload).then(function (res) {
