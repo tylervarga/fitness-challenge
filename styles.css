@@ -202,9 +202,19 @@ input:focus, select:focus, button:focus-visible {
   flex: 1; padding: 9px 4px 7px; border: none; background: transparent;
   font-size: 11px; font-weight: 600; color: var(--slate); cursor: pointer; font-family: var(--body);
 }
-.tabbar button .ico { display: block; font-size: 19px; margin-bottom: 1px; }
+.tabbar button .ico { display: block; margin-bottom: 2px; }
+.tabbar button .ico svg {
+  width: 21px; height: 21px; display: block; margin: 0 auto;
+  fill: none; stroke: currentColor; stroke-width: 1.8;
+  stroke-linecap: round; stroke-linejoin: round;
+}
 .tabbar button.on { color: var(--navy); }
-.tabbar button.on .ico { transform: translateY(-1px); }
+.tabbar button.on .ico svg { stroke-width: 2.2; }
+
+/* small in-form toggles (gender / push-up style) */
+.seg.mini { margin: 4px 0 2px; }
+.seg.locked { opacity: 0.5; }
+.seg.locked button { cursor: default; }
 
 /* small screens */
 @media (max-width: 380px) {
