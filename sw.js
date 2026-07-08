@@ -2,7 +2,7 @@
    Live data (Google Apps Script) is never cached — scores are always fresh.
    WHEN UPDATING THE APP: bump CACHE_NAME (v1 -> v2) so phones fetch new files. */
 
-var CACHE_NAME = 'cfc-shell-v1';
+var CACHE_NAME = 'cfc-shell-v2';
 var SHELL = [
   './',
   './index.html',
