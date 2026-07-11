@@ -216,6 +216,24 @@ input:focus, select:focus, button:focus-visible {
 .seg.locked { opacity: 0.5; }
 .seg.locked button { cursor: default; }
 
+/* ---------- sponsors ---------- */
+.sponsor-card a { text-decoration: none; color: inherit; }
+.sponsor-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+.sponsor {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 6px; min-height: 74px; padding: 10px;
+  background: var(--paper); border: 1px solid var(--line); border-radius: 10px;
+}
+.sponsor img { max-width: 100%; max-height: 44px; object-fit: contain; }
+.sponsor-name {
+  font-family: var(--display); font-weight: 700; font-size: 18px;
+  text-transform: uppercase; letter-spacing: 0.04em; color: var(--navy); text-align: center;
+}
+.sponsor-tier {
+  font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+  background: var(--gold-soft); color: #8a6516; border-radius: 6px; padding: 1px 6px;
+}
+
 /* small screens */
 @media (max-width: 380px) {
   .board .num { font-size: 19px; }
