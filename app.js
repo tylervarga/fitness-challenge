@@ -91,6 +91,37 @@
     return { perCategory: perCategory, base: base, bonus: bonus, total: base + bonus };
   }
 
+  /** "Boost your score" donation card. Empty string if no donation URL is set. */
+  function donateCardHtml() {
+    var cfg = state.config;
+    if (!cfg || !cfg.donationPageUrl) return '';
+    return '<div class="card"><h2>Boost your score</h2>' +
+      '<p class="muted">Every $' + cfg.donationDollarsPerPoint +
+      ' your team raises adds 1 bonus point. No refunds. No shame.</p>' +
+      '<a class="btn gold" style="text-decoration:none;text-align:center" href="' +
+      esc(cfg.donationPageUrl) + '" target="_blank" rel="noopener">Donate to ' +
+      esc(cfg.charityName) + '</a></div>';
+  }
+
+  /** Sponsor thank-you card. Empty string when there are no sponsors. */
+  function sponsorCardHtml() {
+    var sponsors = (state.config && state.config.sponsors) || [];
+    if (!sponsors.length) return '';
+    var html = '<div class="card sponsor-card"><h2>Thank you to our sponsors</h2><div class="sponsor-grid">';
+    sponsors.forEach(function (s) {
+      var inner = s.logo
+        ? '<img src="sponsors/' + esc(s.logo) + '" alt="' + esc(s.name) + '" loading="lazy">'
+        : '<span class="sponsor-name">' + esc(s.name) + '</span>';
+      var tag = s.tier === 'title' ? '<span class="sponsor-tier">Title sponsor</span>' : '';
+      var block = '<div class="sponsor">' + inner + tag + '</div>';
+      html += s.url
+        ? '<a href="' + esc(s.url) + '" target="_blank" rel="noopener">' + block + '</a>'
+        : block;
+    });
+    html += '</div></div>';
+    return html;
+  }
+
   // ------------------------------------------------------------------ nav
 
   var tabButtons = document.querySelectorAll('.tabbar button');
@@ -121,8 +152,11 @@
       if (cfg.error) throw new Error(cfg.error);
       state.config = cfg;
       $('hdr-title').textContent = cfg.challengeName || 'Fitness Challenge';
-      $('hdr-eyebrow').textContent = (cfg.seasonLabel ? cfg.seasonLabel + ' · ' : '') +
+      var eyebrow = (cfg.seasonLabel ? cfg.seasonLabel + ' · ' : '') +
         'In support of ' + (cfg.charityName || 'charity');
+      var title = (cfg.sponsors || []).filter(function (s) { return s.tier === 'title'; })[0];
+      if (title) eyebrow += ' · Presented by ' + title.name;
+      $('hdr-eyebrow').textContent = eyebrow;
       document.title = cfg.challengeName || 'Fitness Challenge';
       showView('standings');
     }).catch(function (e) {
@@ -158,6 +192,7 @@
     if (!d) return;
     var html = '';
     if (state.standingsMode === 'teams') {
+      html += donateCardHtml();
       html += '<div class="card"><h2>Team standings</h2>';
       if (!d.standings.length) {
         html += '<p class="muted">No teams yet. Be the first — register from the My Team tab.</p>';
@@ -174,14 +209,7 @@
         html += '</tbody></table>';
       }
       html += '</div>';
-      if (state.config.donationPageUrl) {
-        html += '<div class="card"><h2>Boost your score</h2>' +
-          '<p class="muted">Every $' + state.config.donationDollarsPerPoint +
-          ' your team raises adds 1 bonus point. No refunds. No shame.</p>' +
-          '<a class="btn gold" style="text-decoration:none;text-align:center" href="' +
-          esc(state.config.donationPageUrl) + '" target="_blank" rel="noopener">Donate to ' +
-          esc(state.config.charityName) + '</a></div>';
-      }
+      html += sponsorCardHtml();
     } else {
       var weeks = state.config.numWeeks;
       html += '<div class="card"><h2>Top 25 individuals</h2><div class="seg" id="top25-seg">';
@@ -362,6 +390,7 @@
       ' pts for scoring in all 5 categories). Donations: $' + d.donationDollars + ' raised = ' +
       d.donationPoints + ' bonus points.</p></div>';
 
+    html += donateCardHtml();
     html += '<button class="btn ghost" id="team-switch">Use a different team code</button>';
     $('team-body').innerHTML = html;
 
@@ -663,7 +692,8 @@
 
   function renderFinalLive() {
     var d = state.finalData;
-    var html = '<div class="card"><h2>Grand standings</h2>' +
+    var html = donateCardHtml();
+    html += '<div class="card"><h2>Grand standings</h2>' +
       '<p class="muted">4-week challenge points + Final Challenge event points.</p>';
     if (!d.grandStandings.length) {
       html += '<p class="muted">Nothing to show yet.</p>';
@@ -701,6 +731,7 @@
       }
       html += '</div>';
     });
+    html += sponsorCardHtml();
     $('final-body').innerHTML = html;
     $('final-refresh').addEventListener('click', renderFinalView);
   }
